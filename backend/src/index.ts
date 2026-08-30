@@ -1,31 +1,4 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import { createServer } from "http";
-import authRoutes from "./routes/auth";
-import listingRoutes from "./routes/listings";
-import bidRoutes from "./routes/bids";
-import { initSocket } from "./lib/socket";
-
-dotenv.config();
-
-const app = express();
-const httpServer = createServer(app);
-
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
-
-initSocket(httpServer, FRONTEND_URL);
-
-app.use(cors({ origin: FRONTEND_URL }));
-app.use(express.json());
-
-app.use("/api/auth", authRoutes);
-app.use("/api/listings", listingRoutes);
-app.use("/api/listings", bidRoutes);
-
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
+import { httpServer } from "./app";
 
 const PORT = process.env.PORT || 4001;
 
