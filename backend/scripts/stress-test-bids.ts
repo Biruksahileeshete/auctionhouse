@@ -86,7 +86,7 @@ async function main() {
     console.log("Failure reasons (status: error message):");
     const reasonCounts = new Map<string, number>();
     for (const f of failures) {
-      const key = `${f.status}: ${f.body.error || JSON.stringify(f.body)}`;
+      const key = `${f.status}: ${f.body.error || JSON.stringify(f.body)}${f.body.detail ? ` (${f.body.detail})` : ""}`;
       reasonCounts.set(key, (reasonCounts.get(key) ?? 0) + 1);
     }
     for (const [reason, count] of reasonCounts) {

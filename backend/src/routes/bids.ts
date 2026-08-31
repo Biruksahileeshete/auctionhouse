@@ -31,8 +31,7 @@ router.post("/:id/bids", requireAuth, async (req: AuthenticatedRequest, res: Res
   }
 
   try {
-    const result = await prisma.$transaction(async (tx) => {
-      // Row-level lock: SELECT ... FOR UPDATE via raw query, since
+    const result = await prisma.$transaction(async (tx) => {      // Row-level lock: SELECT ... FOR UPDATE via raw query, since
       // Prisma's normal findUnique doesn't support locking directly.
       // This blocks any other transaction trying to read/lock the same
       // row until this transaction commits or rolls back.
@@ -90,6 +89,15 @@ router.post("/:id/bids", requireAuth, async (req: AuthenticatedRequest, res: Res
       });
 
       return { newBid, updatedListing, previousTopBid, wasExtended: withinSnipeWindow };
+    }, {
+      // Under concurrent load, requests queue up waiting to acquire the
+      // row lock (FOR UPDATE) on the same listing — Prisma's defaults
+      // (maxWait 2s, timeout 5s) are too tight for a burst of many
+      // simultaneous bids on one listing, where later-queued
+      // transactions can easily exceed those defaults just waiting
+      // their turn, even though each individual transaction is fast.
+      maxWait: 10000,
+      timeout: 15000,
     });
 
     // Broadcast only AFTER the transaction has committed — everyone
@@ -139,7 +147,13 @@ router.post("/:id/bids", requireAuth, async (req: AuthenticatedRequest, res: Res
     }
 
     console.error("Bid placement error:", err);
-    return res.status(500).json({ error: "Failed to place bid" });
+    return res.status(500).json({
+      error: "Failed to place bid",
+      // Include the real underlying message too — genuinely useful while
+      // debugging concurrency issues, low-risk to expose since this is a
+      // portfolio project, not something handling sensitive data.
+      detail: message,
+    });
   }
 });
 
