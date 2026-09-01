@@ -29,56 +29,63 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6">
-      <div className="w-full max-w-sm">
-        <Link href="/" className="inline-block mb-10">
-          <span className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-            Auction<span className="text-[#D4AF37]">House</span>
+    <div className="flex min-h-screen items-center justify-center px-6 py-10">
+      <div className="w-full max-w-md rounded-[2rem] border border-slate-700/80 bg-slate-950/75 p-7 shadow-[0_0_30px_rgba(14,165,233,0.1)] backdrop-blur-xl">
+        <Link href="/" className="mb-8 inline-flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-500 text-lg font-bold text-slate-950 shadow-[0_0_30px_rgba(96,165,250,0.45)]">
+            A
+          </div>
+          <span className="text-2xl font-semibold tracking-tight text-white">
+            Auction<span className="text-cyan-300">House</span>
           </span>
         </Link>
 
-        <h1 className="text-3xl mb-8" style={{ fontFamily: "var(--font-display)" }}>
-          Create your account
-        </h1>
+        <h1 className="mb-8 text-3xl font-semibold text-white">Create your account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs text-[#8A9690] mb-1.5">Full name</label>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+              Full name
+            </label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-[#0F1B14] border border-[#D4AF37]/20 rounded-lg px-3.5 py-2.5 text-sm outline-none focus:border-[#D4AF37]/60 transition-colors"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
               placeholder="Jane Doe"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#8A9690] mb-1.5">Email</label>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+              Email
+            </label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[#0F1B14] border border-[#D4AF37]/20 rounded-lg px-3.5 py-2.5 text-sm outline-none focus:border-[#D4AF37]/60 transition-colors"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#8A9690] mb-1.5">Password</label>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+              Password
+            </label>
             <input
               type="password"
               required
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#0F1B14] border border-[#D4AF37]/20 rounded-lg px-3.5 py-2.5 text-sm outline-none focus:border-[#D4AF37]/60 transition-colors"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
               placeholder="At least 8 characters"
             />
           </div>
 
           {error && (
-            <p className="text-sm text-[#FF4757] bg-[#FF4757]/10 border border-[#FF4757]/20 rounded-lg px-3 py-2">
+            <p className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
               {error}
             </p>
           )}
@@ -86,15 +93,15 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#D4AF37] text-[#0A120D] font-medium rounded-lg py-2.5 text-sm hover:bg-[#E5C158] transition-colors disabled:opacity-50"
+            className="w-full rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:opacity-50"
           >
             {loading ? "Creating account…" : "Create account"}
           </button>
         </form>
 
-        <p className="mt-8 text-sm text-[#8A9690]">
+        <p className="mt-8 text-sm text-slate-400">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#D4AF37] hover:underline">
+          <Link href="/login" className="text-cyan-300 hover:underline">
             Sign in
           </Link>
         </p>
