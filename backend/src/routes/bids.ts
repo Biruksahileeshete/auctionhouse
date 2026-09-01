@@ -23,7 +23,7 @@ const EXTENSION_MS = 30 * 1000; // 30 seconds
 // could read the same stale price and both get accepted.
 router.post("/:id/bids", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   const { amount } = req.body;
-  const listingId = req.params.id;
+  const listingId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const bidderId = req.userId as string;
 
   if (typeof amount !== "number" || amount <= 0) {
