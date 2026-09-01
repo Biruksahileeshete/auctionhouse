@@ -150,15 +150,15 @@ export default function BrowsePage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by title…"
-            className="w-full rounded-full border border-[#D8C7A1] bg-[#F9F5EE] px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#BA8A26] focus:ring-2 focus:ring-[#BA8A26]/20"
+            className="w-full max-w-[240px] rounded-full border border-[#D8C7A1] bg-[#F9F5EE] px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#BA8A26] focus:ring-2 focus:ring-[#BA8A26]/20"
           />
-          <div className="flex gap-2">
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto">
             {(["all", "ending-soon", "my-auctions"] as const).map((option) => (
               <button
                 key={option}
                 type="button"
                 onClick={() => setFilter(option)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                className={`whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition sm:text-sm ${
                   filter === option
                     ? "bg-[#17342E] text-white"
                     : "border border-[#D8C7A1] bg-white text-slate-700 hover:bg-[#F4E9D1]"
@@ -269,14 +269,16 @@ function ListingCard({ listing, index }: { listing: Listing; index: number }) {
               </span>
             </div>
 
-            <div className="flex items-end justify-between">
+            <div className="flex items-end justify-between gap-2">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.18em] text-slate-500">Current bid</p>
                 <p className="mt-1 text-xl text-[#17342E]" style={{ fontFamily: "var(--font-display)" }}>
                   ${(listing.currentPrice ?? listing.startingPrice).toLocaleString()}
                 </p>
               </div>
-              <span className="text-[11px] text-slate-500">{listing.bids?.length ?? 0} bids</span>
+              <span className="rounded-full bg-[#EEF6F3] px-2 py-1 text-[11px] font-medium text-[#17342E]">
+                {listing.bids?.length ?? 0} bids
+              </span>
             </div>
           </div>
         </div>
