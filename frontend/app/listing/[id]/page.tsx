@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, FormEvent } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { getListing, placeBid, getToken, Listing, Bid } from "@/lib/api";
+import { getListing, placeBid, getToken, clearToken, Listing, Bid } from "@/lib/api";
 import { getSocket, watchListing, unwatchListing } from "@/lib/socket";
 
 export default function ListingDetailPage() {
@@ -21,6 +21,7 @@ export default function ListingDetailPage() {
   const [priceFlashKey, setPriceFlashKey] = useState(0);
   const [extendedFlash, setExtendedFlash] = useState(false);
   const [outbidFlash, setOutbidFlash] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const currentUserId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -70,6 +71,11 @@ export default function ListingDetailPage() {
     };
   }, [listingId]);
 
+  const handleSignOut = () => {
+    clearToken();
+    router.push("/");
+  };
+
   async function handleBid(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -96,34 +102,46 @@ export default function ListingDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-[#8A9690] text-sm">Loading…</p>
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.2),transparent_24%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)]">
+        <p className="text-sm text-slate-600">Loading…</p>
       </div>
     );
   }
 
   if (!listing) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-[#8A9690] text-sm">Listing not found.</p>
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.2),transparent_24%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)]">
+        <p className="text-sm text-slate-600">Listing not found.</p>
       </div>
     );
   }
 
   const currentPrice = listing.currentPrice ?? listing.startingPrice;
   const minNextBid = listing.currentPrice ? currentPrice + listing.minIncrement : listing.startingPrice;
+  const imageUrl = listing.imageUrl && listing.imageUrl.trim() ? listing.imageUrl : "";
 
   return (
-    <div className="min-h-screen">
-      <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-[#D4AF37]/10">
-        <Link href="/">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.24),transparent_28%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)] text-slate-800">
+      <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-[#C7B38A]/40">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-[#C89B3C] via-[#E7D7A8] to-[#90B4A4] shadow-lg shadow-[#C89B3C]/25 flex items-center justify-center text-lg font-bold text-[#17342E]">A</div>
           <span className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-            Auction<span className="text-[#D4AF37]">House</span>
+            Auction<span className="text-[#BA8A26]">House</span>
           </span>
         </Link>
-        <Link href="/" className="text-sm text-[#8A9690] hover:text-[#F0EDE4] transition-colors">
-          ← All auctions
-        </Link>
+
+        <div className="flex items-center gap-3">
+          <Link href="/" className="text-sm font-medium text-[#17342E] transition hover:text-[#BA8A26]">
+            ← All auctions
+          </Link>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="rounded-full border border-[#17342E]/20 bg-white/70 px-4 py-2 text-sm font-medium text-[#17342E] transition hover:-translate-y-0.5 hover:bg-white"
+          >
+            Sign out
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
@@ -139,34 +157,42 @@ export default function ListingDetailPage() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-5 gap-10">
+      <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 gap-8 lg:grid-cols-5">
         <div className="lg:col-span-3">
-          <div className="aspect-[4/3] bg-[#12201A] rounded-2xl overflow-hidden mb-6 border border-[#D4AF37]/10">
-            {listing.imageUrl ? (
+          <div className="mb-6 overflow-hidden rounded-[2rem] border border-[#E0D0A6] bg-white/75 shadow-[0_18px_50px_rgba(94,75,40,0.08)]">
+            {imageUrl && !imageFailed ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={listing.imageUrl} alt={listing.title} className="w-full h-full object-cover" />
+              <img
+                src={imageUrl}
+                alt={listing.title}
+                className="h-[420px] w-full object-cover"
+                onError={() => setImageFailed(true)}
+              />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[#3A4A40] text-sm">
+              <div className="flex h-[420px] items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(201,155,60,0.2),rgba(247,243,236,1)_60%)] text-lg font-medium text-slate-500">
                 No image
               </div>
             )}
           </div>
-          <p className="text-xs text-[#8A9690] mb-2">Sold by {listing.seller?.name}</p>
-          <h1 className="text-2xl mb-4" style={{ fontFamily: "var(--font-display)" }}>
-            {listing.title}
-          </h1>
-          <p className="text-sm text-[#B8C2BC] leading-relaxed">{listing.description}</p>
+
+          <div className="rounded-[2rem] border border-[#E0D0A6] bg-white/80 p-6 shadow-[0_12px_40px_rgba(71,55,25,0.04)]">
+            <p className="mb-2 text-xs uppercase tracking-[0.22em] text-slate-500">Sold by {listing.seller?.name}</p>
+            <h1 className="mb-4 text-3xl text-[#17342E]" style={{ fontFamily: "var(--font-display)" }}>
+              {listing.title}
+            </h1>
+            <p className="text-sm leading-relaxed text-slate-600">{listing.description}</p>
+          </div>
         </div>
 
         <div className="lg:col-span-2">
-          <div className="border border-[#D4AF37]/15 rounded-2xl p-6 bg-[#0F1B14] sticky top-6">
-            <div className="flex items-start justify-between mb-6">
+          <div className="sticky top-6 rounded-[2rem] border border-[#E0D0A6] bg-white/85 p-6 shadow-[0_18px_50px_rgba(94,75,40,0.08)] backdrop-blur-sm">
+            <div className="mb-6 flex items-start justify-between">
               <div>
-                <p className="text-xs text-[#8A9690] uppercase tracking-wide mb-1">Current bid</p>
+                <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-slate-500">Current bid</p>
                 <motion.p
                   key={priceFlashKey}
-                  initial={{ scale: 1.15, color: "#D4AF37" }}
-                  animate={{ scale: 1, color: "#F0EDE4" }}
+                  initial={{ scale: 1.15, color: "#BA8A26" }}
+                  animate={{ scale: 1, color: "#17342E" }}
                   transition={{ duration: 0.6 }}
                   className="text-4xl"
                   style={{ fontFamily: "var(--font-display)" }}
@@ -183,7 +209,7 @@ export default function ListingDetailPage() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-4 text-xs text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-lg px-3 py-2"
+                  className="mb-4 rounded-xl border border-[#D6B368] bg-[#F7E7C0] px-3 py-2 text-xs text-[#7A5B14]"
                 >
                   ⏱ Auction extended — a bid landed in the final seconds.
                 </motion.div>
@@ -191,7 +217,7 @@ export default function ListingDetailPage() {
             </AnimatePresence>
 
             {listing.status === "ACTIVE" ? (
-              <form onSubmit={handleBid} className="space-y-3 mb-6">
+              <form onSubmit={handleBid} className="mb-6 space-y-3">
                 <div>
                   <input
                     type="number"
@@ -200,50 +226,48 @@ export default function ListingDetailPage() {
                     value={bidAmount}
                     onChange={(e) => setBidAmount(e.target.value)}
                     placeholder={`${minNextBid.toLocaleString()} or more`}
-                    className="w-full bg-[#0A120D] border border-[#D4AF37]/20 rounded-lg px-3.5 py-2.5 text-sm outline-none focus:border-[#D4AF37]/60 transition-colors"
+                    className="w-full rounded-xl border border-[#D8C7A1] bg-[#F9F5EE] px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#BA8A26] focus:ring-2 focus:ring-[#BA8A26]/20"
                   />
-                  <p className="text-[10px] text-[#8A9690] mt-1.5">
+                  <p className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-500">
                     Minimum bid: ${minNextBid.toLocaleString()}
                   </p>
                 </div>
                 {error && (
-                  <p className="text-xs text-[#FF4757] bg-[#FF4757]/10 border border-[#FF4757]/20 rounded-lg px-3 py-2">
+                  <p className="rounded-lg border border-[#FFB2B2] bg-[#FFF2F2] px-3 py-2 text-xs text-[#B93131]">
                     {error}
                   </p>
                 )}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-[#D4AF37] text-[#0A120D] font-medium rounded-lg py-2.5 text-sm hover:bg-[#E5C158] transition-colors disabled:opacity-50"
+                  className="w-full rounded-xl bg-[#17342E] px-4 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-[#214a43] disabled:opacity-50"
                 >
                   {submitting ? "Placing bid…" : "Place bid"}
                 </button>
               </form>
             ) : (
-              <p className="text-sm text-[#8A9690] mb-6">This auction has ended.</p>
+              <p className="mb-6 text-sm text-slate-500">This auction has ended.</p>
             )}
 
             <div>
-              <p className="text-xs text-[#8A9690] uppercase tracking-wide mb-3">
+              <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-slate-500">
                 Bid history ({bids.length})
               </p>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
                 <AnimatePresence initial={false}>
                   {bids.map((bid) => (
                     <motion.div
                       key={bid.id}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex justify-between items-center text-xs py-1.5 border-b border-[#D4AF37]/5"
+                      className="flex items-center justify-between border-b border-[#F0E3C3] py-2 text-sm"
                     >
-                      <span className="text-[#B8C2BC]">{bid.bidder?.name || "Bidder"}</span>
-                      <span className="text-[#D4AF37]">${bid.amount.toLocaleString()}</span>
+                      <span className="text-slate-600">{bid.bidder?.name || "Bidder"}</span>
+                      <span className="font-semibold text-[#17342E]">${bid.amount.toLocaleString()}</span>
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                {bids.length === 0 && (
-                  <p className="text-xs text-[#3A4A40]">No bids yet — be the first.</p>
-                )}
+                {bids.length === 0 && <p className="text-sm text-slate-500">No bids yet — be the first.</p>}
               </div>
             </div>
           </div>

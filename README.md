@@ -19,7 +19,19 @@ This is handled with row-level database locking (`SELECT ... FOR UPDATE`) inside
 - **Anti-sniping** — a bid in the final ~30 seconds automatically extends the deadline, server-side only (never trusts client-reported time)
 - Outbid notifications, delivered in real time
 - Full bid history / audit trail per listing
+- Search and filtered browsing for active auctions
+- My auctions dashboard and quick listing stats
+- Sign out flow with secure local token cleanup
+- Image fallbacks and polished product cards for visual clarity
 - Stripe payment on auction close (MVP: simple charge to the platform; real per-seller payouts via Stripe Connect are a deliberate v2 addition, not MVP scope)
+
+## Nice-to-have features added in this iteration
+
+- Better landing-page hero and market-style dashboard UI
+- Search by title with “ending soon” and “my auctions” views
+- Light, airy, premium design system to make the storefront feel more modern and creative
+- Image placeholder handling so listings without images still look intentional instead of broken
+- Cleaner sign-in / sign-out flows for a more complete user experience
 
 ## Tech stack
 

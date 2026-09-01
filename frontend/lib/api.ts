@@ -115,6 +115,17 @@ export function getToken(): string | null {
   if (typeof window !== "undefined") return localStorage.getItem(TOKEN_KEY);
   return null;
 }
+export function getCurrentUserId(): string | null {
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1])) as { userId?: string };
+    return payload.userId ?? null;
+  } catch {
+    return null;
+  }
+}
 export function clearToken() {
   if (typeof window !== "undefined") localStorage.removeItem(TOKEN_KEY);
 }
