@@ -100,9 +100,7 @@ export default function BrowsePage() {
       <div className="mx-auto max-w-6xl px-6 pb-8 pt-12">
         <div className="grid items-center gap-6 lg:grid-cols-[1.3fr_0.7fr]">
           <div>
-            <p className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-cyan-200">
-              AI-powered live market
-            </p>
+            
             <h1 className="max-w-xl text-4xl leading-tight text-white sm:text-5xl lg:text-6xl" style={{ fontFamily: "var(--font-sans)" }}>
               Smarter bidding for rare finds and standout moments.
             </h1>
