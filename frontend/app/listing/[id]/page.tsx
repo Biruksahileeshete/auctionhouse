@@ -102,16 +102,16 @@ export default function ListingDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.2),transparent_24%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)]">
-        <p className="text-sm text-slate-600">Loading…</p>
+      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_right,_rgba(139,92,246,0.15),transparent_24%),linear-gradient(180deg,#040b14_0%,#091a29_36%,#040b14_100%)]">
+        <p className="text-sm text-slate-300">Loading…</p>
       </div>
     );
   }
 
   if (!listing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.2),transparent_24%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)]">
-        <p className="text-sm text-slate-600">Listing not found.</p>
+      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),transparent_24%),radial-gradient(circle_at_right,_rgba(139,92,246,0.15),transparent_24%),linear-gradient(180deg,#040b14_0%,#091a29_36%,#040b14_100%)]">
+        <p className="text-sm text-slate-300">Listing not found.</p>
       </div>
     );
   }
@@ -121,26 +121,30 @@ export default function ListingDetailPage() {
   const imageUrl = listing.imageUrl && listing.imageUrl.trim() ? listing.imageUrl : "";
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(184,166,130,0.24),transparent_28%),linear-gradient(180deg,#f7f3ec_0%,#eef6f3_50%,#f7f3ec_100%)] text-slate-800">
-      <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-[#C7B38A]/40">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-[#C89B3C] via-[#E7D7A8] to-[#90B4A4] shadow-lg shadow-[#C89B3C]/25 flex items-center justify-center text-lg font-bold text-[#17342E]">A</div>
-          <span className="text-2xl tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-            Auction<span className="text-[#BA8A26]">House</span>
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-3">
-          <Link href="/" className="text-sm font-medium text-[#17342E] transition hover:text-[#BA8A26]">
-            ← All auctions
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),transparent_26%),radial-gradient(circle_at_right,_rgba(139,92,246,0.15),transparent_24%),linear-gradient(180deg,#040b14_0%,#091a29_36%,#040b14_100%)] text-slate-100">
+      <nav className="mx-auto max-w-6xl px-6 py-6">
+        <div className="flex items-center justify-between rounded-full border border-slate-700/80 bg-slate-950/70 px-4 py-3 shadow-[0_0_30px_rgba(14,165,233,0.12)] backdrop-blur-xl">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-500 text-lg font-bold text-slate-950 shadow-[0_0_30px_rgba(96,165,250,0.55)]">
+              A
+            </div>
+            <span className="text-2xl font-semibold tracking-tight text-white">
+              Auction<span className="text-cyan-300">House</span>
+            </span>
           </Link>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="rounded-full border border-[#17342E]/20 bg-white/70 px-4 py-2 text-sm font-medium text-[#17342E] transition hover:-translate-y-0.5 hover:bg-white"
-          >
-            Sign out
-          </button>
+
+          <div className="flex items-center gap-3">
+            <Link href="/" className="text-sm font-medium text-slate-300 transition hover:text-cyan-300">
+              ← All auctions
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -150,16 +154,16 @@ export default function ListingDetailPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-[#FF4757] text-white text-sm text-center py-2.5"
+            className="bg-rose-500 px-4 py-2 text-center text-sm font-medium text-white"
           >
             You&apos;ve been outbid! Someone just placed a higher bid.
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 gap-8 lg:grid-cols-5">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 lg:grid-cols-5">
         <div className="lg:col-span-3">
-          <div className="mb-6 overflow-hidden rounded-[2rem] border border-[#E0D0A6] bg-white/75 shadow-[0_18px_50px_rgba(94,75,40,0.08)]">
+          <div className="mb-6 overflow-hidden rounded-[2rem] border border-slate-700/80 bg-slate-950/70 shadow-[0_18px_60px_rgba(14,116,144,0.16)]">
             {imageUrl && !imageFailed ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -169,33 +173,30 @@ export default function ListingDetailPage() {
                 onError={() => setImageFailed(true)}
               />
             ) : (
-              <div className="flex h-[420px] items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(201,155,60,0.2),rgba(247,243,236,1)_60%)] text-lg font-medium text-slate-500">
+              <div className="flex h-[420px] items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),rgba(15,23,42,1)_60%)] text-lg font-medium text-slate-400">
                 No image
               </div>
             )}
           </div>
 
-          <div className="rounded-[2rem] border border-[#E0D0A6] bg-white/80 p-6 shadow-[0_12px_40px_rgba(71,55,25,0.04)]">
-            <p className="mb-2 text-xs uppercase tracking-[0.22em] text-slate-500">Sold by {listing.seller?.name}</p>
-            <h1 className="mb-4 text-3xl text-[#17342E]" style={{ fontFamily: "var(--font-display)" }}>
-              {listing.title}
-            </h1>
-            <p className="text-sm leading-relaxed text-slate-600">{listing.description}</p>
+          <div className="rounded-[2rem] border border-slate-700/80 bg-slate-950/70 p-6 shadow-[0_0_25px_rgba(14,165,233,0.06)]">
+            <p className="mb-2 text-xs uppercase tracking-[0.22em] text-slate-400">Sold by {listing.seller?.name}</p>
+            <h1 className="mb-4 text-3xl font-semibold text-white">{listing.title}</h1>
+            <p className="text-sm leading-relaxed text-slate-300">{listing.description}</p>
           </div>
         </div>
 
         <div className="lg:col-span-2">
-          <div className="sticky top-6 rounded-[2rem] border border-[#E0D0A6] bg-white/85 p-6 shadow-[0_18px_50px_rgba(94,75,40,0.08)] backdrop-blur-sm">
-            <div className="mb-6 flex items-start justify-between">
+          <div className="sticky top-6 rounded-[2rem] border border-slate-700/80 bg-slate-950/75 p-6 shadow-[0_18px_60px_rgba(14,116,144,0.18)] backdrop-blur-xl">
+            <div className="mb-6 flex items-start justify-between gap-4">
               <div>
-                <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-slate-500">Current bid</p>
+                <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-slate-400">Current bid</p>
                 <motion.p
                   key={priceFlashKey}
-                  initial={{ scale: 1.15, color: "#BA8A26" }}
-                  animate={{ scale: 1, color: "#17342E" }}
+                  initial={{ scale: 1.15, color: "#7dd3fc" }}
+                  animate={{ scale: 1, color: "#f8fafc" }}
                   transition={{ duration: 0.6 }}
-                  className="text-4xl"
-                  style={{ fontFamily: "var(--font-display)" }}
+                  className="text-4xl font-semibold"
                 >
                   ${currentPrice.toLocaleString()}
                 </motion.p>
@@ -209,7 +210,7 @@ export default function ListingDetailPage() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-4 rounded-xl border border-[#D6B368] bg-[#F7E7C0] px-3 py-2 text-xs text-[#7A5B14]"
+                  className="mb-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs text-amber-200"
                 >
                   ⏱ Auction extended — a bid landed in the final seconds.
                 </motion.div>
@@ -226,31 +227,31 @@ export default function ListingDetailPage() {
                     value={bidAmount}
                     onChange={(e) => setBidAmount(e.target.value)}
                     placeholder={`${minNextBid.toLocaleString()} or more`}
-                    className="w-full rounded-xl border border-[#D8C7A1] bg-[#F9F5EE] px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#BA8A26] focus:ring-2 focus:ring-[#BA8A26]/20"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
                   />
-                  <p className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                  <p className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">
                     Minimum bid: ${minNextBid.toLocaleString()}
                   </p>
                 </div>
                 {error && (
-                  <p className="rounded-lg border border-[#FFB2B2] bg-[#FFF2F2] px-3 py-2 text-xs text-[#B93131]">
+                  <p className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-xs text-rose-200">
                     {error}
                   </p>
                 )}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full rounded-xl bg-[#17342E] px-4 py-3 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-[#214a43] disabled:opacity-50"
+                  className="w-full rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:opacity-50"
                 >
                   {submitting ? "Placing bid…" : "Place bid"}
                 </button>
               </form>
             ) : (
-              <p className="mb-6 text-sm text-slate-500">This auction has ended.</p>
+              <p className="mb-6 text-sm text-slate-400">This auction has ended.</p>
             )}
 
             <div>
-              <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-slate-500">
+              <p className="mb-3 text-[10px] uppercase tracking-[0.22em] text-slate-400">
                 Bid history ({bids.length})
               </p>
               <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -260,14 +261,14 @@ export default function ListingDetailPage() {
                       key={bid.id}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center justify-between border-b border-[#F0E3C3] py-2 text-sm"
+                      className="flex items-center justify-between border-b border-slate-800 py-2 text-sm"
                     >
-                      <span className="text-slate-600">{bid.bidder?.name || "Bidder"}</span>
-                      <span className="font-semibold text-[#17342E]">${bid.amount.toLocaleString()}</span>
+                      <span className="text-slate-300">{bid.bidder?.name || "Bidder"}</span>
+                      <span className="font-semibold text-white">${bid.amount.toLocaleString()}</span>
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                {bids.length === 0 && <p className="text-sm text-slate-500">No bids yet — be the first.</p>}
+                {bids.length === 0 && <p className="text-sm text-slate-400">No bids yet — be the first.</p>}
               </div>
             </div>
           </div>
@@ -300,10 +301,8 @@ function CountdownDisplay({ endsAt }: { endsAt: string }) {
 
   return (
     <div className="text-right">
-      <p className="text-xs text-[#8A9690] uppercase tracking-wide mb-1">Time left</p>
-      <p
-        className={`text-xl font-mono ${urgent ? "text-[#FF4757] animate-pulse" : "text-[#F0EDE4]"}`}
-      >
+      <p className="mb-1 text-xs uppercase tracking-wide text-slate-400">Time left</p>
+      <p className={`text-xl font-mono ${urgent ? "animate-pulse text-rose-300" : "text-cyan-200"}`}>
         {timeLeft}
       </p>
     </div>
