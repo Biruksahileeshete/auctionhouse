@@ -29,22 +29,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-10">
-      <div className="w-full max-w-md rounded-[2rem] border border-slate-700/80 bg-slate-950/75 p-7 shadow-[0_0_30px_rgba(14,165,233,0.1)] backdrop-blur-xl">
-        <Link href="/" className="mb-8 inline-flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-500 text-lg font-bold text-slate-950 shadow-[0_0_30px_rgba(96,165,250,0.45)]">
-            A
-          </div>
-          <span className="text-2xl font-semibold tracking-tight text-white">
-            Auction<span className="text-cyan-300">House</span>
-          </span>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-10">
+      <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+        <Link href="/" className="inline-block mb-8">
+          <span className="text-2xl font-bold text-blue-600">AuctionHouse</span>
         </Link>
 
-        <h1 className="mb-8 text-3xl font-semibold text-white">Create your account</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Create your account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Full name
             </label>
             <input
@@ -52,12 +47,12 @@ export default function RegisterPage() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full rounded-md border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               placeholder="Jane Doe"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Email
             </label>
             <input
@@ -65,12 +60,12 @@ export default function RegisterPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full rounded-md border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-[0.18em] text-slate-400">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Password
             </label>
             <input
@@ -79,13 +74,13 @@ export default function RegisterPage() {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full rounded-md border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               placeholder="At least 8 characters"
             />
           </div>
 
           {error && (
-            <p className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           )}
@@ -93,15 +88,15 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:opacity-50"
+            className="w-full rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Creating account…" : "Create account"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
 
-        <p className="mt-8 text-sm text-slate-400">
+        <p className="mt-6 text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-cyan-300 hover:underline">
+          <Link href="/login" className="text-blue-600 hover:underline font-medium">
             Sign in
           </Link>
         </p>
