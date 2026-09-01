@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-display",
+const manrope = Manrope({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
-const inter = Inter({
-  variable: "--font-sans",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "AuctionHouse",
-  description: "Real-time bidding, done right.",
+  title: "AuralBid",
+  description: "AI-inspired live auction marketplace.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#f7f3ec] text-[#17342E]" style={{ fontFamily: "var(--font-sans)" }}>
+    <html lang="en" className={`${manrope.variable} ${jetbrains.variable} h-full antialiased`}>
+      <body className="min-h-full bg-[#040b14] text-slate-100" style={{ fontFamily: "var(--font-sans)" }}>
         {children}
       </body>
     </html>
