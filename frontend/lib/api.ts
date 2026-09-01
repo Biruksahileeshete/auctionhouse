@@ -12,10 +12,24 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       ...(options.headers || {}),
     },
   });
-  const data = await res.json();
+
+  const contentType = res.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  const data = isJson ? await res.json() : await res.text();
+
   if (!res.ok) {
-    throw new Error((data as ApiError).error || "Something went wrong");
+    if (isJson && typeof data === "object" && data && "error" in data) {
+      throw new Error((data as ApiError).error || "Something went wrong");
+    }
+
+    const detail = typeof data === "string" && data ? data.slice(0, 180) : "Unexpected server response";
+    throw new Error(`Request failed: ${detail}`);
   }
+
+  if (!isJson) {
+    throw new Error("API response was not valid JSON.");
+  }
+
   return data as T;
 }
 

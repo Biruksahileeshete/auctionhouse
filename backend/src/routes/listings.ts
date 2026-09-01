@@ -52,8 +52,11 @@ router.get("/", async (_req, res: Response) => {
   try {
     const listings = await prisma.listing.findMany({
       where: { status: "ACTIVE" },
-      orderBy: { endsAt: "asc" }, // soonest-ending first — natural "act now" ordering
-      include: { seller: { select: { id: true, name: true } } },
+      orderBy: { endsAt: "asc" },
+      include: {
+        seller: { select: { id: true, name: true } },
+        bids: { select: { id: true, amount: true } },
+      },
     });
 
     return res.json({ listings });
