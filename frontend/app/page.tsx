@@ -177,7 +177,7 @@ export default function BrowsePage() {
             <p className="text-slate-600">No auctions match your search right now.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {visibleListings.map((listing, i) => (
               <ListingCard key={listing.id} listing={listing} index={i} />
             ))}
@@ -186,6 +186,29 @@ export default function BrowsePage() {
       </div>
     </div>
   );
+}
+
+function makeListingPlaceholder(title: string) {
+  const safeTitle = title.replace(/&/g, "and").slice(0, 28) || "Auction item";
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#F7E7C0"/>
+          <stop offset="52%" stop-color="#D8EAE2"/>
+          <stop offset="100%" stop-color="#E9F0F6"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="900" fill="url(#bg)"/>
+      <circle cx="920" cy="170" r="120" fill="#E6C76F" fill-opacity="0.42"/>
+      <circle cx="250" cy="740" r="170" fill="#9EB7A8" fill-opacity="0.4"/>
+      <rect x="160" y="300" width="880" height="250" rx="32" fill="#FFFFFF" fill-opacity="0.55"/>
+      <text x="600" y="448" text-anchor="middle" fill="#17342E" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="700">${safeTitle}</text>
+      <text x="600" y="520" text-anchor="middle" fill="#4B5D58" font-family="Arial, Helvetica, sans-serif" font-size="28">AuctionHouse</text>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 function ListingCard({ listing, index }: { listing: Listing; index: number }) {
@@ -210,33 +233,35 @@ function ListingCard({ listing, index }: { listing: Listing; index: number }) {
     return () => clearInterval(interval);
   }, [listing.endsAt]);
 
-  const imageUrl = listing.imageUrl && listing.imageUrl.trim() ? listing.imageUrl : "";
+  const imageUrl = listing.imageUrl && listing.imageUrl.trim() ? listing.imageUrl : makeListingPlaceholder(listing.title);
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
       <Link href={`/listing/${listing.id}`}>
-        <div className="group overflow-hidden rounded-[1.8rem] border border-[#E0D0A6] bg-white/80 shadow-[0_12px_40px_rgba(71,55,25,0.08)] transition duration-200 hover:-translate-y-1 hover:border-[#BA8A26]/50 hover:shadow-[0_20px_50px_rgba(116,89,43,0.12)]">
-          <div className="relative aspect-[4/3] overflow-hidden bg-[#F1E8D7]">
-            {imageUrl && !imageFailed ? (
+        <div className="group overflow-hidden rounded-[1.5rem] border border-[#E0D0A6] bg-white/80 shadow-[0_12px_30px_rgba(71,55,25,0.06)] transition duration-200 hover:-translate-y-1 hover:border-[#BA8A26]/50 hover:shadow-[0_18px_40px_rgba(116,89,43,0.12)]">
+          <div className="relative h-48 overflow-hidden bg-[#F1E8D7]">
+            {!imageFailed ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={imageUrl}
                 alt={listing.title}
                 className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                onError={() => setImageFailed(true)}
+                onError={() => {
+                  setImageFailed(true);
+                }}
               />
             ) : (
-              <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(201,155,60,0.24),rgba(247,243,236,1)_58%)] text-sm font-medium text-slate-500">
+              <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(201,155,60,0.24),rgba(247,243,236,1)_58%)] text-xs font-medium text-slate-500">
                 No image
               </div>
             )}
           </div>
 
-          <div className="space-y-4 p-4">
+          <div className="space-y-3 p-3.5">
             <div className="flex items-start justify-between gap-3">
-              <p className="line-clamp-2 text-lg font-semibold text-[#17342E]">{listing.title}</p>
+              <p className="line-clamp-2 text-base font-semibold text-[#17342E]">{listing.title}</p>
               <span
-                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${
+                className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
                   urgent ? "bg-[#FCE6E6] text-[#D14A4A]" : "bg-[#F3EAC6] text-[#8D6723]"
                 }`}
               >
@@ -246,12 +271,12 @@ function ListingCard({ listing, index }: { listing: Listing; index: number }) {
 
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Current bid</p>
-                <p className="mt-1 text-2xl text-[#17342E]" style={{ fontFamily: "var(--font-display)" }}>
+                <p className="text-[9px] uppercase tracking-[0.18em] text-slate-500">Current bid</p>
+                <p className="mt-1 text-xl text-[#17342E]" style={{ fontFamily: "var(--font-display)" }}>
                   ${(listing.currentPrice ?? listing.startingPrice).toLocaleString()}
                 </p>
               </div>
-              <span className="text-xs text-slate-500">{listing.bids?.length ?? 0} bids</span>
+              <span className="text-[11px] text-slate-500">{listing.bids?.length ?? 0} bids</span>
             </div>
           </div>
         </div>
